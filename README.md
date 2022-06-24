@@ -1,1 +1,1 @@
-# digit-recognition-28x28-with-ANN
+# digit-recognition-mnist

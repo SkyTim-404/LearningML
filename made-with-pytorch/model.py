@@ -12,7 +12,9 @@ class Model(nn.Module):
         )
         self.fc_layers = nn.Sequential(
             nn.Linear(256, 128),
-            nn.Linear(128, 10)
+            nn.LeakyReLU(0.1),
+            nn.Linear(128, 10),
+            nn.Softmax()
         )
         
     def forward(self, x):
@@ -42,6 +44,6 @@ class CNNBlock(nn.Module):
 def test():
     model = Model()
     x = torch.randn((1, 28, 28))
-    print(model(x).shape)
+    print(model(x))
     
 test()
