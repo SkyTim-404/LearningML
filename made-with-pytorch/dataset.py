@@ -1,24 +1,26 @@
 import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
+import torchvision.transforms as transforms
 
-def get_train_dataset():
-    trainset = datasets.MNIST(root='./data', train=True, download=True, transform=None)
-    return trainset
+class Dataset:
+    transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize(0.5, 1.0)])
+    
+    @classmethod
+    def get_train_dataset(cls):
+        trainset = datasets.MNIST(root='./data', train=True, download=True, transform=cls.transforms)
+        return trainset
 
-def get_test_dataset():
-    testset = datasets.MNIST(root='./data', train=False, download=True, transform=None)
-    return testset
+    @classmethod
+    def get_test_dataset(cls):
+        testset = datasets.MNIST(root='./data', train=False, download=True, transform=cls.transforms)
+        return testset
     
 def test():
-    train = get_train_dataset()
-    train = DataLoader(train, shuffle=True)
+    train = Dataset.get_train_dataset()
 
-    img, label = next(iter(train))
-
-    # print(label)
-    # print(type(img))
-    # print(img.size)
+    (img, label) = train[0]
+    img = img.squeeze()
 
     plt.imshow(img, cmap='gray')
     plt.show()
