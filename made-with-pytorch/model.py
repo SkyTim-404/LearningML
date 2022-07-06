@@ -12,7 +12,10 @@ class Model(nn.Module):
         )
         self.fc_layers = nn.Sequential(
             nn.Linear(64, 32),
-            nn.LeakyReLU(0.1),
+            nn.ReLU(),
+            nn.Dropout(p=0.5),
+            nn.Linear(32, 32),
+            nn.ReLU(),
             nn.Dropout(p=0.5),
             nn.Linear(32, 10),
             nn.Softmax(dim=1)
@@ -29,17 +32,16 @@ class CNNBlock(nn.Module):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size)
         self.batchnorm = nn.BatchNorm2d(out_channels)
-        self.leakyrelu = nn.LeakyReLU(0.1)
+        self.relu = nn.ReLU()
         
     def forward(self, x):
-        x = self.leakyrelu(self.batchnorm(self.conv1(x)))
+        x = self.relu(self.batchnorm(self.conv1(x)))
         return F.max_pool2d(x, 2)
     
     
 def test():
-    model = Model().to('cuda')
-    x = torch.randn((1, 28, 28)).cuda()
-    print(model(x))
+    matrix = torch.randn(2, 3)
+    print(matrix)
     
     
 if __name__ == '__main__':
