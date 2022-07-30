@@ -6,17 +6,18 @@ class Model(nn.Module):
     def __init__(self):
         super().__init__()
         self.cnn_layers = nn.Sequential(
-            CNNBlock(1, 16, 5),
-            CNNBlock(16, 32, 5),
-            CNNBlock(32, 64, 3)
+            CNNBlock(1, 16, 3),
+            CNNBlock(16, 16, 3),
+            nn.MaxPool2d(2),
+            CNNBlock(16, 32, 3),
+            CNNBlock(32, 32, 3),
+            nn.MaxPool2d(2),
+            CNNBlock(32, 64, 3),
+            nn.MaxPool2d(2)
         )
         self.fc_layers = nn.Sequential(
-            nn.Linear(64, 32),
-            nn.ReLU(),
-            nn.Dropout(p=0.5),
-            nn.Linear(32, 32),
-            nn.ReLU(),
-            nn.Dropout(p=0.5),
+            FCBlock(64, 32),
+            FCBlock(32, 32),
             nn.Linear(32, 10),
             nn.Softmax(dim=1)
         )
@@ -30,13 +31,30 @@ class Model(nn.Module):
 class CNNBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size):
         super().__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size)
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)
         self.batchnorm = nn.BatchNorm2d(out_channels)
-        self.relu = nn.ReLU()
+        self.relu = nn.LeakyReLU(0.01)
         
     def forward(self, x):
-        x = self.relu(self.batchnorm(self.conv1(x)))
-        return F.max_pool2d(x, 2)
+        x = self.conv(x)
+        x = self.relu(x)
+        x = self.batchnorm(x)
+        return x
+    
+class FCBlock(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super().__init__()
+        self.linear = nn.Linear(in_channels, out_channels)
+        self.batchnorm = nn.BatchNorm1d(out_channels)
+        self.relu = nn.LeakyReLU(0.01)
+        self.dropout = nn.Dropout(p=0.5)
+    
+    def forward(self, x):
+        x = self.linear(x)
+        x = self.relu(x)
+        x = self.batchnorm(x)
+        x = self.dropout(x)
+        return x
     
     
 def test():

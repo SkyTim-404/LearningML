@@ -46,10 +46,10 @@ class Model:
         update3 = (predicted - actual) * predicted * (1 - predicted)
         delta_W3 = learning_rate * update3 * hlayer2.T
         delta_b3 = learning_rate * update3
-        update2 = mathlib.dReLU(hlayer2) * np.sum(update3 * self.W3, axis=0).reshape((self.W3.shape[1], 1))
+        update2 = mathlib.dReLU(hlayer2) * self.W3.T.dot(update3)
         delta_W2 = learning_rate * update2 * hlayer1.T
         delta_b2 = learning_rate * update2
-        update1 = mathlib.dReLU(hlayer1) * np.sum(update2 * self.W2, axis=0).reshape((self.W2.shape[1], 1))
+        update1 = mathlib.dReLU(hlayer1) * self.W2.T.dot(update2)
         delta_W1 = learning_rate * update1 * input.T
         delta_b1 = learning_rate * update1
         self.W1 -= delta_W1
