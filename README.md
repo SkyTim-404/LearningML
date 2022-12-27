@@ -1,1 +1,1 @@
-# digit-recognition-mnist
+# Machine learning with mnist dataset
