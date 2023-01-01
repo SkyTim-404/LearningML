@@ -13,11 +13,14 @@ class ConvBlock(nn.Module):
 
 
 class ConvTransposeBlock(nn.Module):
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels, out_channels, kernel_size=3, stride=1):
         super().__init__()
+        self.batch_norm = nn.BatchNorm2d(in_channels)
+        self.relu = nn.ReLU()
+        self.conv_transpose = nn.ConvTranspose2d(in_channels, out_channels, kernel_size, stride=stride)
         
     def forward(self, x):
-        pass
+        return self.conv_transpose(self.relu(self.batch_norm(x)))
     
     
 class ResidualConvBlock(nn.Module):

@@ -17,8 +17,7 @@ class Discriminator(nn.Module):
             nn.AdaptiveAvgPool2d((1, 1)), 
         ])
         self.linears = nn.ModuleList([
-            LinearBlock(in_features=64, out_features=16),
-            LinearBlock(in_features=16, out_features=1)
+            LinearBlock(in_features=64, out_features=1), 
         ])
         self.last_activation = nn.Sigmoid()
         
