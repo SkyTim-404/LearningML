@@ -2,10 +2,9 @@ import torch.nn as nn
 from model.module import ConvBlock, ConvTransposeBlock, ResidualConvBlock
 
 class Generator(nn.Module):
-    def __init__(self, latent_features):
+    def __init__(self, latent_dim):
         super().__init__()
-        self.latent_features = latent_features
-        self.linear = nn.Linear(self.latent_features, 6*6*64)
+        self.linear = nn.Linear(latent_dim, 6*6*64)
         self.convs = nn.ModuleList([
             ResidualConvBlock(in_channels=64, num_layers=2, kernel_size=3, padding=1), 
             ConvTransposeBlock(in_channels=64, out_channels=32, kernel_size=3, stride=2), 
