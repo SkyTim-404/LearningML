@@ -6,14 +6,17 @@ class Discriminator(nn.Module):
     def __init__(self):
         super().__init__()
         self.convs = nn.ModuleList([
-            ConvBlock(in_channels=1, out_channels=16, kernel_size=3, padding=1), 
-            ResidualConvBlock(in_channels=16, num_layers=2, kernel_size=3, padding=1), 
-            ConvBlock(in_channels=16, out_channels=16, kernel_size=3, padding=1, stride=2), 
-            ConvBlock(in_channels=16, out_channels=32, kernel_size=3, padding=1), 
-            ResidualConvBlock(in_channels=32, num_layers=2, kernel_size=3, padding=1),
+            ConvBlock(in_channels=1, out_channels=16, kernel_size=3, padding=1),
+            ResidualConvBlock(in_channels=16),
+            ResidualConvBlock(in_channels=16),
+            ConvBlock(in_channels=16, out_channels=16, kernel_size=3, padding=1, stride=2),
+            ConvBlock(in_channels=16, out_channels=32, kernel_size=3, padding=1),
+            ResidualConvBlock(in_channels=32),
+            ResidualConvBlock(in_channels=32),
             ConvBlock(in_channels=32, out_channels=32, kernel_size=3, padding=1, stride=2),
             ConvBlock(in_channels=32, out_channels=64, kernel_size=3, padding=1, stride=1),
-            ResidualConvBlock(in_channels=64, num_layers=2, kernel_size=3, padding=1),
+            ResidualConvBlock(in_channels=64),
+            ResidualConvBlock(in_channels=64),
             nn.AdaptiveAvgPool2d((1, 1)), 
         ])
         self.linears = nn.ModuleList([

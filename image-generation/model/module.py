@@ -24,13 +24,13 @@ class ConvTransposeBlock(nn.Module):
     
     
 class ResidualConvBlock(nn.Module):
-    def __init__(self, in_channels, num_layers=2, kernel_size=3, padding=1):
+    def __init__(self, in_channels):
         super().__init__()
-        self.convs = nn.ModuleList()
-        for _ in range(num_layers):
-            self.convs.append(nn.BatchNorm2d(in_channels))
-            self.convs.append(nn.LeakyReLU(0.01))
-            self.convs.append(nn.Conv2d(in_channels, in_channels, kernel_size, padding=padding))
+        self.convs = nn.ModuleList([
+            ConvBlock(in_channels, in_channels//4, kernel_size=1, padding=0), 
+            ConvBlock(in_channels//4, in_channels//4, kernel_size=3, padding=1), 
+            ConvBlock(in_channels//4, in_channels, kernel_size=1, padding=0), 
+        ])
     
     def forward(self, x):
         identity = torch.clone(x)
