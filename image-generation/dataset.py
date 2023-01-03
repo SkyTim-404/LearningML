@@ -1,12 +1,13 @@
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
+from abc import ABC
 
 def initialize_datasets():
     FashionMNIST.initialize()
     DigitMNIST.initialize()
     
 
-class BaseDataset():
+class BaseDataset(ABC):
     def __init__(self, batch_size, transforms):
         self.batch_size = batch_size
         self.transforms = transforms
@@ -21,6 +22,9 @@ class BaseDataset():
     
     def get_train_dataloader(self):
         return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True)
+    
+    def get_test_dataloader(self):
+        return DataLoader(self.test_dataset, batch_size=self.batch_size, shuffle=True)
     
 
 class FashionMNIST(BaseDataset):
