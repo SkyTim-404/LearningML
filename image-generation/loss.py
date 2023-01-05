@@ -6,7 +6,7 @@ class DiscriminatorLoss(nn.Module):
         super().__init__()
         
     def forward(self, predict_real, predict_fake):
-        return torch.mean(-torch.log(predict_real)-torch.log(1-predict_fake))
+        return -torch.mean(torch.log(predict_real+1e-8)+torch.log(1-predict_fake+1e-8))
 
 
 class GeneratorLoss(nn.Module):
@@ -14,4 +14,4 @@ class GeneratorLoss(nn.Module):
         super().__init__()
         
     def forward(self, predict_fake):
-        return torch.mean(-torch.log(predict_fake))
+        return -torch.mean(torch.log(predict_fake+1e-8))
