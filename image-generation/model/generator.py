@@ -16,7 +16,7 @@ class Generator(nn.Module):
             ResidualConvBlock(in_channels=16),
             ConvBlock(in_channels=16, out_channels=1, kernel_size=3, padding=1),
         ])
-        self.last_activation = nn.Tanh()
+        self.last_activation = nn.Sigmoid()
     
     def forward(self, x):
         x = self.linear(x)
