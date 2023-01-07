@@ -5,23 +5,31 @@ def train(opt: Option):
     train_dataloader = opt.dataset.get_train_dataloader()
     for e in range(opt.num_epochs):
         for batch_idx, (real_img, _) in enumerate(train_dataloader):
-            print(f"epoch: {e}, {batch_idx}/{len(train_dataloader)}", end="\r")
-            latent = torch.randn((opt.batch_size, opt.latent_dim)).to(opt.device)
             real_img = real_img.to(opt.device)
-            fake_img = opt.generator(latent)
-            predict_real = opt.discriminator(real_img)
-            predict_fake = opt.discriminator(fake_img)
-            
+            print(real_img[0])
+            break
+            # Train critic
+            for _ in range(opt.critic_iterations):
+                latent = torch.randn((opt.batch_size, opt.latent_dim)).to(opt.device)
+                fake_img = opt.generator(latent)
+                predict_real = opt.critic(real_img)
+                predict_fake = opt.critic(fake_img)
+                
+                critic_loss = opt.critic_loss_fn(predict_real, predict_fake)
+                opt.critic_optimizer.zero_grad()
+                critic_loss.backward(retain_graph=True)
+                opt.critic_optimizer.step()
+                for p in opt.critic.parameters():
+                    p.data.clamp_(-opt.weight_clip, opt.weight_clip)
+                print(f"epoch: {e}, {batch_idx}/{len(train_dataloader)} loss: {critic_loss.item()} ########################", end="\r")
+            # Train generator
+            predict_fake = opt.critic(fake_img)
             generator_loss = opt.generator_loss_fn(predict_fake)
-            discriminator_loss = opt.discriminator_loss_fn(predict_real, predict_fake)
             opt.generator_optimizer.zero_grad()
-            opt.discriminator_optimizer.zero_grad()
-            generator_loss.backward(retain_graph=True)
-            discriminator_loss.backward()
+            generator_loss.backward()
             opt.generator_optimizer.step()
-            opt.discriminator_optimizer.step()
             
-    torch.save(opt.discriminator, opt.discriminator_filename)
+    torch.save(opt.critic, opt.critic_filename)
     torch.save(opt.generator, opt.generator_filename)
             
 
