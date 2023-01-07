@@ -6,8 +6,6 @@ def train(opt: Option):
     for e in range(opt.num_epochs):
         for batch_idx, (real_img, _) in enumerate(train_dataloader):
             real_img = real_img.to(opt.device)
-            print(real_img[0])
-            break
             # Train critic
             for _ in range(opt.critic_iterations):
                 latent = torch.randn((opt.batch_size, opt.latent_dim)).to(opt.device)
