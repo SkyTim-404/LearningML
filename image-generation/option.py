@@ -12,7 +12,7 @@ class Option():
         self.learning_rate = 5e-5
         self.latent_dim = 128 # 64, 128, 256
         self.batch_size = 64
-        self.num_epochs = 45
+        self.num_epochs = 50
         self.weight_decay = 1e-5
         self.weight_clip = 0.01
         self.critic_iterations = 5
