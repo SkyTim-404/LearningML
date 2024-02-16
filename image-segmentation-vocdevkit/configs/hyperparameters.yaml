@@ -1,0 +1,8 @@
+device: cuda
+num_epochs: 30
+learning_rate: 1.e-4
+batch_size: 32
+in_channels: 3
+classes: 21
+model_dir: ./model_weights/model.pth
+load_model: true
