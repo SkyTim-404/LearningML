@@ -1,1 +1,0 @@
-# Machine learning with mnist dataset
