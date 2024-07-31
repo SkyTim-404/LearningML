@@ -1,5 +1,4 @@
-/data
-*.pyc
 *pycache*
+*.pyc
 .DS_Store
-*/test.ipynb
+*test.ipynb
