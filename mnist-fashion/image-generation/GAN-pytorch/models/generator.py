@@ -17,6 +17,8 @@ class Generator(nn.Module):
             ConvTransposeBlock(in_channels=32, out_channels=16, kernel_size=4, stride=2),
             ResidualConvBlock(in_channels=16),
             ResidualConvBlock(in_channels=16),
+            ResidualConvBlock(in_channels=16),
+            ResidualConvBlock(in_channels=16),
             ConvBlock(in_channels=16, out_channels=1, kernel_size=3, padding=1),
         ])
     

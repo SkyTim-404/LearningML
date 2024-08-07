@@ -1,6 +1,6 @@
 # ImplementML
 
-This is the repo that I use to try to implement machine learning algorithms
+This is the repo where I try to implement and test out different machine learning algorithms. 
 
 ### Folder Structure
 ```

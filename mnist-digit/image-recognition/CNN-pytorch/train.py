@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 
-sys.path.append(r'../../')
+sys.path.append(r'../')
 
 from dataset import Dataset
 from models import CNN

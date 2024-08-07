@@ -5,7 +5,7 @@ from torch.optim import Adam, RMSprop, AdamW
 from torch.nn import BCELoss
 from torchvision import transforms
 
-sys.path.append(r"../../")
+sys.path.append(r"../")
 
 from option import Option
 from dataset import FashionMNIST
@@ -71,10 +71,9 @@ def main(opt: Option):
             discriminator_losses.append(discriminator_loss.item())
             print(f"epoch: {e+1}, {batch_idx}/{len(train_dataloader)}, generator loss: {generator_loss.item():.2f}, discriminator loss: {discriminator_loss.item():.2f}", end="\r")
         
-        print("================================================================================================")
-        print(f"epoch: {e+1}, generator loss: {sum(generator_losses)/len(generator_losses):.2f}, discriminator loss: {sum(discriminator_losses)/len(discriminator_losses):.2f}")
+        print(f"===== epoch: {e+1}, generator loss: {sum(generator_losses)/len(generator_losses):.4f}, discriminator loss: {sum(discriminator_losses)/len(discriminator_losses):.4f} =====")
             
-        if (e+1) % opt.save_after_epochs == 0:
+        if (e+1) % opt.save_interval == 0:
             torch.save(generator.state_dict(), opt.generator_path)
             torch.save(discriminator.state_dict(), opt.discriminator_path)
             print("Models saved")
