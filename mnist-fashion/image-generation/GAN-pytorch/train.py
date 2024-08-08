@@ -56,7 +56,6 @@ def main(opt: Option):
             discriminator_optimizer.step()
             
             # Train generator: maximize log(D(G(z)))
-            latent = torch.randn((opt.batch_size, opt.latent_dim)).to(opt.device)
             generator_optimizer.zero_grad()
             discriminator_optimizer.zero_grad()
             fake_imgs = generator(latent)

@@ -60,15 +60,14 @@ def train(hyperparameters, train_dataloader, val_dataloader, model):
 
 def main(hyperparameters):
     # Data initialization
-    transform = A.Compose([
+    train_dataset = PascalVOCDataset(root=r"../../data", image_set="train", download=True, transform=A.Compose([
         A.Resize(height=160, width=256), 
         A.Rotate(limit=35, p=0.5), 
         A.HorizontalFlip(p=0.5), 
         A.VerticalFlip(p=0.5), 
         A.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5), max_pixel_value=255), 
         ToTensorV2(transpose_mask=True), 
-    ])
-    train_dataset = PascalVOCDataset(root=r"../../data", image_set="train", download=True, transform=transform)
+    ]))
     train_dataloader = DataLoader(train_dataset, batch_size=hyperparameters.batch_size, shuffle=True, drop_last=True)
     val_dataset = PascalVOCDataset(root=r"../../data", image_set="val", download=True)
     val_dataloader = DataLoader(val_dataset, batch_size=hyperparameters.batch_size, shuffle=False, drop_last=True)
